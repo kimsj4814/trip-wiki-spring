@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TripApiController {
-	
+
 	@Value("${my.apikey}")
 	private String API_KEY;
 	@GetMapping("/apitest")
