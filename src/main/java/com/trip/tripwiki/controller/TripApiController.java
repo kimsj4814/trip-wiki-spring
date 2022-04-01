@@ -9,12 +9,17 @@ import java.net.HttpURLConnection;
 
 import org.json.JSONObject;
 import org.json.XML;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
 public class TripApiController {
-	private final String API_KEY = "";
+	
+	@Value("${my.apikey}")
+	private String API_KEY;
 	@GetMapping("/apitest")
 	public String callApiWithXml(String keyword) {
 		StringBuffer result = new StringBuffer();
