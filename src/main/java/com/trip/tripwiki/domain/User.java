@@ -10,8 +10,17 @@ public class User {
 	private String user_profile_original;
 	private String user_nickname;
 	private String user_email;
+	private String user_authMailcode;
 	private Date reg_date;
 	
+	
+	
+	public String getUser_authMailcode() {
+		return user_authMailcode;
+	}
+	public void setUser_authMailcode(String user_authMailcode) {
+		this.user_authMailcode = user_authMailcode;
+	}
 	public String getUser_id() {
 		return user_id;
 	}

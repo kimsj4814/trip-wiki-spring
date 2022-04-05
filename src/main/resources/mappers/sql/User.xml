@@ -8,7 +8,7 @@
 		values(
 		#{user_id},#{user_password},#{user_profile},
 		#{user_profile_original},#{user_nickname}
-		,#{user_email},sysdate
+		,#{user_email},#{user_authMailcode},sysdate
 		)
 	</insert>
 	<select id="idcheck" resultType="user" parameterType="String">
