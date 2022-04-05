@@ -25,8 +25,14 @@ public class UserController {
 	
 	@PostMapping("/users")
 	public int call(
-			@RequestBody User user) {
-		return  userService.isId(user.getUser_id(), user.getUser_password());
+			@RequestBody User user,HttpSession session) {
+
+		int result = userService.isId(user.getUser_id(), user.getUser_password());
+		if(result == 1) {
+			session.setAttribute("id", user.getUser_id());
+			session.setMaxInactiveInterval(3600);
+		}
+		return result;
 	}//로그인 end
 	
 	@PostMapping("/users/add")
