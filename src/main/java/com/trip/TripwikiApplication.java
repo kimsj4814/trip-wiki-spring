@@ -9,5 +9,5 @@ public class TripwikiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TripwikiApplication.class, args);
 	}
-
+	
 }
