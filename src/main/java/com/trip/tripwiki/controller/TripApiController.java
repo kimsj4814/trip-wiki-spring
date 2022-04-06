@@ -21,6 +21,7 @@ public class TripApiController {
 
 	@Value("${my.apikey}")
 	private String API_KEY;
+	
 	@GetMapping("/apitest")
 	public String callApiWithXml(String keyword) {
 		StringBuffer result = new StringBuffer();
@@ -38,6 +39,7 @@ public class TripApiController {
 				+ "serviceKey="+API_KEY
 				+"&MobileApp=AppTest&MobileOS=ETC&"
 				+ "pageNo=1&numOfRows=10&listYN=Y&arrange=A&contentTypeId=12&keyword=" +encodeResult;
+
 				try {
 					URL url = new URL(apiUrl);
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
