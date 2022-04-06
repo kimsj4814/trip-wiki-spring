@@ -3,8 +3,9 @@ package com.trip.tripwiki.controller;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
-
+import java.net.URLEncoder;
 import java.net.HttpURLConnection;
 
 import org.json.JSONObject;
@@ -25,11 +26,20 @@ public class TripApiController {
 	public String callApiWithXml(String keyword) {
 		StringBuffer result = new StringBuffer();
 		String jsonPrintString = null;
+		keyword = "서울";
+		String encodeResult = null;
+		try {
+			encodeResult = URLEncoder.encode(keyword,"UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		String apiUrl="http://api.visitkorea.or.kr/openapi/"
 				+ "service/rest/KorService/searchKeyword?"
 				+ "serviceKey="+API_KEY
 				+"&MobileApp=AppTest&MobileOS=ETC&"
-				+ "pageNo=2&numOfRows=50&listYN=Y&arrange=A&contentTypeId=12&keyword=%EA%B2%BD%EA%B8%B0";
+				+ "pageNo=1&numOfRows=10&listYN=Y&arrange=A&contentTypeId=12&keyword=" +encodeResult;
+
 				try {
 					URL url = new URL(apiUrl);
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -42,7 +52,6 @@ public class TripApiController {
 		                result.append(returnLine);
 		            }
 		            
-
 		            JSONObject jsonObject = XML.toJSONObject(result.toString());
 		            jsonPrintString = jsonObject.toString();
 					
