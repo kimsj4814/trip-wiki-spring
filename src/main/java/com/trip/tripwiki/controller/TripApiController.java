@@ -38,7 +38,7 @@ public class TripApiController {
 				+ "service/rest/KorService/searchKeyword?"
 				+ "serviceKey="+API_KEY
 				+"&MobileApp=AppTest&MobileOS=ETC&"
-				+ "pageNo=1&numOfRows=10&listYN=Y&arrange=A&contentTypeId=12&keyword=" +encodeResult;
+				+ "pageNo=1&numOfRows=8&listYN=Y&arrange=A&contentTypeId=12&keyword=" +encodeResult;
 
 				try {
 					URL url = new URL(apiUrl);
