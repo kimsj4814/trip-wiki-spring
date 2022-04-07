@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Gallery">
+	<insert id="insert" parameterType="gallery">
+		<selectKey resultType="int" order="BEFORE" keyProperty="gallery_id">
+			select nvl(max(gallery_id), 0) + 1 from gallery
+		</selectKey>
+		insert into gallery
+		(gallery_id, user_id, photo, title, area)
+		values 
+		(#{gallery_id}, #{user_id}, #{photo}, #{title}, #{area})
+	</insert>
+
+</mapper>
