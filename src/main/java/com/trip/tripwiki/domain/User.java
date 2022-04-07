@@ -10,16 +10,23 @@ public class User {
 	private String user_profile_original;
 	private String user_nickname;
 	private String user_email;
-	private String user_authMailcode;
+	private String user_mail_authkey;
+	private int user_mail_auth;
 	private Date reg_date;
+
 	
-	
-	
-	public String getUser_authMailcode() {
-		return user_authMailcode;
+	public String getUser_mail_authkey() {
+		return user_mail_authkey;
 	}
-	public void setUser_authMailcode(String user_authMailcode) {
-		this.user_authMailcode = user_authMailcode;
+	public void setUser_mail_authkey(String user_mail_authkey) {
+		this.user_mail_authkey = user_mail_authkey;
+	}
+	
+	public int getUser_mail_auth() {
+		return user_mail_auth;
+	}
+	public void setUser_mail_auth(int user_mail_auth) {
+		this.user_mail_auth = user_mail_auth;
 	}
 	public String getUser_id() {
 		return user_id;
