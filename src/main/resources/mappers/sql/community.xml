@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Community">
+
+	<select id="searchCount" parameterType="map" resultType="int" >
+	select count(*) 
+	from community 
+	where id != 'admin' 
+	<include refid="search_"/>
+	
+	</select>
+	
+	
+	<sql id="search_">
+		 <if test="search_field!=null">
+									and
+									<foreach collection="search_field" separator="or" item="index">
+									<choose>
+										<when test='index=="I"'>id</when>
+										<when test='index=="S"'>subject</when>
+										<when test='index=="L"'>location</when>
+									</choose>
+									like #{search_word}
+									</foreach>
+								</if>
+	</sql>
+	
+	<select id="getSearchList" parameterType="map" resultType="comboardlist">
+		select * 
+		from ( select rownum rnum, b.*
+					 		from(select * from community 
+					           where id != 'admin'
+					          	<include refid="search_"/>
+					             order by id
+					             )b
+					         )
+					  where rnum &gt;= #{start} and rnum &lt;= #{end}
+	</select>
+	
+	</mapper>
+	
+	
