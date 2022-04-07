@@ -8,7 +8,7 @@ public class User {
 	private String user_password;
 	private String user_profile;
 	private String user_profile_original;
-	private String user_nickname;
+//	private String user_nickname;
 	private String user_email;
 	private String user_mail_authkey;
 	private int user_mail_auth;
@@ -52,12 +52,12 @@ public class User {
 	public void setUser_profile_original(String user_profile_original) {
 		this.user_profile_original = user_profile_original;
 	}
-	public String getUser_nickname() {
-		return user_nickname;
-	}
-	public void setUser_nickname(String user_nickname) {
-		this.user_nickname = user_nickname;
-	}
+//	public String getUser_nickname() {
+//		return user_nickname;
+//	}
+//	public void setUser_nickname(String user_nickname) {
+//		this.user_nickname = user_nickname;
+//	}
 	public String getUser_email() {
 		return user_email;
 	}
