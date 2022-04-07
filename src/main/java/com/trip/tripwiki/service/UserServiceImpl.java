@@ -34,7 +34,11 @@ public class UserServiceImpl implements UserService{
 			return -1;
 		}else {
 			if(user.getUser_password().equals(password)) {
-				return 1;
+				if(user.getUser_mail_auth() == 0) {
+					return 2;
+				}else {
+					return 1;
+				}
 			}else {
 				return 0;
 			}
@@ -60,5 +64,7 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return "";	
 	}
+
+
 	
 }

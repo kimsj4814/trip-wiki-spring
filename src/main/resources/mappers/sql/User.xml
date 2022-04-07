@@ -7,8 +7,8 @@
 		insert into users 
 		values(
 		#{user_id},#{user_password},#{user_profile},
-		#{user_profile_original},#{user_nickname}
-		,#{user_email},#{user_authMailcode},sysdate
+		#{user_profile_original}
+		,#{user_email},'0',0,sysdate
 		)
 	</insert>
 	<select id="idcheck" resultType="user" parameterType="String">
@@ -17,4 +17,19 @@
 	<select id="count" resultType="int">
 		select count(*) from board
 	</select>
+	<update id="update_mail_auth_key" parameterType="map">
+		update users
+		set user_mail_authkey = #{user_mail_authkey}
+		where user_id = #{user_id}
+	</update>
+	<update id="userAuth" parameterType="map">
+		<![CDATA[
+			update users
+			set user_mail_auth = 1
+			where (select count(*) from users
+					where user_mail_authkey = #{user_mail_authkey} and user_email = #{user_email})
+			> 0
+			and user_id = #{user_id}
+		]]>
+	</update>
 </mapper>

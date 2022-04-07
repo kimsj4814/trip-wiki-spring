@@ -1,7 +1,6 @@
 package com.trip.tripwiki.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 import javax.servlet.http.HttpSession;
 
@@ -28,6 +27,9 @@ public class UserController {
 			@RequestBody User user,HttpSession session) {
 
 		int result = userService.isId(user.getUser_id(), user.getUser_password());
+		if(result ==2) {
+			return result;
+		}
 		if(result == 1) {
 			session.setAttribute("id", user.getUser_id());
 			session.setMaxInactiveInterval(3600);
@@ -54,11 +56,14 @@ public class UserController {
 		}
 		return result;
 	}//id check end
-	
 	@GetMapping("/getSession")
 	public String getSession(HttpSession session) {
 		logger.info("[getSession]id" + (String) session.getAttribute("id"));
 		return (String) session.getAttribute("id");
 	}
-	
+	@PostMapping("/users/logout")
+	public boolean logout(HttpSession session) {
+		session.invalidate();
+		return true;
+	}
 }
