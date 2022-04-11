@@ -12,7 +12,7 @@ public class User {
 	private String user_email;
 	private String user_mail_authkey;
 	private int user_mail_auth;
-	private Date reg_date;
+	private Date user_reg_date;
 
 	
 	public String getUser_mail_authkey() {
@@ -64,11 +64,12 @@ public class User {
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
 	}
-	public Date getReg_date() {
-		return reg_date;
+	public Date getUser_reg_date() {
+		return user_reg_date;
 	}
-	public void setReg_date(Date reg_date) {
-		this.reg_date = reg_date;
+	public void setUser_reg_date(Date user_reg_date) {
+		this.user_reg_date = user_reg_date;
 	}
+	
 	
 }
