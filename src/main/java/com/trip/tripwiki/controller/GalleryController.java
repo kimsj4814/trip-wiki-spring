@@ -2,15 +2,26 @@ package com.trip.tripwiki.controller;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +39,41 @@ public class GalleryController {
 	@Value("${my.savefolder}")
 	private String saveFolder;
 	
-	@RequestMapping(value="gallery/new", method=RequestMethod.POST)
 	@ResponseBody
+	@GetMapping(value="/photos")
+	public Map<String, Object> galleryListAjax(
+			@RequestParam(value="page", defaultValue="1", required=false) int page,
+			@RequestParam(value="limit", defaultValue="6", required=false) int limit) {
+		
+		int listcount = galleryService.getListCount(); // 총 리스트 수를 받아오기
+		
+		// 총 페이지 수
+		int maxpage = (listcount + limit - 1) / limit;
+		
+		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 ...)
+		int startpage = ((page -1) / 10) * 10 + 1;
+		
+		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 ...)
+		int endpage = startpage + 10 - 1;
+		if (endpage > maxpage)
+			endpage = maxpage;
+		
+		List<Gallery> gallerylist = galleryService.getGalleryList(page, limit); // 리스트 받아오기
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("listcount", listcount);
+		map.put("gallerylist", gallerylist);
+		map.put("limit", limit);
+		return map;
+	}
+	
+	// 포토갤러리 추가
+	@ResponseBody
+	@RequestMapping(value="gallery/new", method=RequestMethod.POST)
 	public String add(Gallery gallery) throws Exception {
 		MultipartFile uploadfile = gallery.getUploadfile();
 		
@@ -67,6 +111,50 @@ public class GalleryController {
 		
 	}
 	
+	// 포토갤러리 수정
+	@PatchMapping("/gallery/update")
+	@ResponseBody
+	public String BoardModifyAction(Gallery gallerydata, 
+			@RequestParam(value="check", defaultValue="", required=false) String check) throws Exception {
+		String message = "";
+		MultipartFile uploadfile = gallerydata.getUploadfile();
+		
+		if (check != null && !check.equals("")) { // 기존 파일을 그대로 사용하는 경우
+			logger.info("기존 파일을 그대로 사용합니다." + check);
+			gallerydata.setPhoto(check);
+		} else {
+			if (uploadfile != null && !uploadfile.isEmpty()) { // 파일을 변경한 경우
+				logger.info("파일이 변경되었습니다.");
+				
+				String fileName = uploadfile.getOriginalFilename(); // 원래 파일명
+				
+				String fileDBName = fileDBName(fileName, saveFolder);
+				
+				// transferTo(File path)는 업로드한 파일을 매개변수의 경로에 저장함.
+				uploadfile.transferTo(new File(saveFolder + fileDBName));
+				
+				// 바뀐 파일명으로 저장
+				gallerydata.setPhoto(fileDBName);
+			} else {
+				logger.info("선택한 파일이 없습니다.");
+				gallerydata.setPhoto(check);
+			}
+		}
+		
+		// DAO에서 수정 메서드를 호출하여 수정
+		int result = galleryService.galleryModify(gallerydata);
+		
+		if (result == 0) { // 수정에 실패한 경우
+			message = "fail";
+		} else { // 수정에 성공한 경우
+			logger.info("포토갤러리 수정 완료");
+			message = "success";
+		}
+		
+		return message;
+	} // BoardModifyAction end
+	
+	// 포토갤러리 이미지 파일명 변경
 	private String fileDBName(String fileName, String saveFolder) {
 		// 새로운 폴더 이름 : 오늘 년+월+일
 	    Calendar c = Calendar.getInstance();
@@ -74,7 +162,7 @@ public class GalleryController {
 	    int month = c.get(Calendar.MONTH) + 1;
 	    int date = c.get(Calendar.DATE);
 	    
-	    String homedir = saveFolder + File.separator + year + "-" + month + "-" + date;
+	    String homedir = saveFolder + "/" + year + "-" + month + "-" + date;
 	    logger.info(homedir);
 	    
 	    // c:/upload/년도-달-일 폴더
@@ -98,10 +186,41 @@ public class GalleryController {
 	    logger.info("refileName = " + refileName);
 
 	    // 오라클 DB에 저장될 파일명
-	    String fileDBName = File.separator + year + "-" + month + "-" + date + File.separator + refileName;
+	    String fileDBName = "/"+ year + "-" + month + "-" + date + "/" + refileName;
 	    logger.info("fileDBName = " + fileDBName);
 	      
 	    return fileDBName;
 	}
+	
+	// 포토갤러리 상세
+	@GetMapping(value={"/gallery/{num}"})
+	@ResponseBody
+	public Map<String, Object> Detail(@PathVariable int num) {
+		Gallery gallery = galleryService.getDetail(num);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("gallery", gallery);
+		return map;
+	}
+	
+	@GetMapping(value={"/gallery/dispaly"})
+	@ResponseBody
+	public byte[] display(String filename, HttpServletResponse response) throws Exception {
+		
+		String sFilePath = saveFolder + filename;
+		logger.info(sFilePath);
+		File file = new File(sFilePath);
+		byte[] bytes = FileCopyUtils.copyToByteArray(file);
+		
+		String sEncoding = new String(filename.getBytes("utf-8"), "ISO-8859-1");
+		
+		response.setHeader("Content-Disposition", "attachment; filename = " + sEncoding);
+		
+		response.setContentLength(bytes.length);
+		
+		return bytes;
+		
+		
+	}
+	
 
 }

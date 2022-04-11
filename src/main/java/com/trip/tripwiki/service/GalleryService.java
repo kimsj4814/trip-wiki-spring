@@ -5,7 +5,11 @@ import com.trip.tripwiki.domain.Gallery;
 
 public interface GalleryService {
 	
-	public List<Gallery> getBoardList(int page, int limit);
+	public int getListCount();
+
+	public List<Gallery> getGalleryList(int page, int limit);
+	
+	public void galleryInsert(Gallery board);
 	
 	public Gallery getDetail(int num);
 	
@@ -13,6 +17,7 @@ public interface GalleryService {
 	
 	public int galleryDelete(int num);
 	
-	public void galleryInsert(Gallery board);
+
+
 	
 }
