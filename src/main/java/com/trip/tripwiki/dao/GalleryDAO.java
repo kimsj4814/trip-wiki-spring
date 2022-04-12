@@ -20,6 +20,10 @@ public class GalleryDAO {
 		return sqlSession.selectOne("Gallery.count");
 	}
 	
+	public List<Gallery> mainGallery() {
+		return sqlSession.selectList("Gallery.main");
+	}
+	
 	public List<Gallery> getGalleryList(HashMap<String, Integer> map) {
 		return sqlSession.selectList("Gallery.list", map);
 	}
@@ -35,6 +39,7 @@ public class GalleryDAO {
 	public Gallery getDetail(int num) {
 		return sqlSession.selectOne("Gallery.detail", num);
 	}
+
 
 
 }

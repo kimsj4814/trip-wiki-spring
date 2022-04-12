@@ -21,6 +21,11 @@ public class GalleryServiceImpl implements GalleryService {
 	}
 	
 	@Override
+	public List<Gallery> mainGallery() {
+		return dao.mainGallery();
+	}
+	
+	@Override
 	public List<Gallery> getGalleryList(int page, int limit) {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		int startrow = (page - 1) * limit + 1;
@@ -50,6 +55,7 @@ public class GalleryServiceImpl implements GalleryService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 
 }
