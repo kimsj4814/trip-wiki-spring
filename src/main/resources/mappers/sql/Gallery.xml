@@ -8,6 +8,15 @@
 		select count(*) from gallery
 	</select>
 	
+	<select id="main" resultType="gallery">
+		select *
+    	from(select rownum rnum, g.* 
+    		 from (select * from gallery 
+         		   order by gallery_id desc) g
+        )
+		where rnum &lt;= 6
+	</select>
+	
 	<select id="list" parameterType="java.util.Map" resultType="gallery">
 		select *
     	from(select rownum rnum, g.* 
@@ -38,7 +47,7 @@
 		set title = #{title},  
 			area = #{area}, 
 			photo = #{photo, jdbcType=VARCHAR} 
-		where gallery_id = #{num} 
+		where gallery_id = #{gallery_id} 
 	</update>
 	
 	<delete id="delete" parameterType="gallery">

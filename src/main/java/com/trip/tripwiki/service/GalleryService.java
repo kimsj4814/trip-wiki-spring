@@ -7,6 +7,8 @@ public interface GalleryService {
 	
 	public int getListCount();
 
+	public List<Gallery> mainGallery();
+	
 	public List<Gallery> getGalleryList(int page, int limit);
 	
 	public void galleryInsert(Gallery board);
@@ -16,8 +18,5 @@ public interface GalleryService {
 	public int galleryModify(Gallery modifyboard);
 	
 	public int galleryDelete(int num);
-	
 
-
-	
 }

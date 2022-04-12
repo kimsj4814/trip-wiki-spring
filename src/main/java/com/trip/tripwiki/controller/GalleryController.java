@@ -39,6 +39,17 @@ public class GalleryController {
 	@Value("${my.savefolder}")
 	private String saveFolder;
 	
+	// 갤러리 리스트 부분 가져오기
+	@ResponseBody
+	@GetMapping(value="/main/photos")
+	public Map<String, Object> MainGallery() {
+		List<Gallery> gallerylist = galleryService.mainGallery();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("gallerylist", gallerylist);
+		return map;
+	}
+	
+	// 갤러리 전체 리스트
 	@ResponseBody
 	@GetMapping(value="/photos")
 	public Map<String, Object> galleryListAjax(
@@ -73,7 +84,7 @@ public class GalleryController {
 	
 	// 포토갤러리 추가
 	@ResponseBody
-	@RequestMapping(value="gallery/new", method=RequestMethod.POST)
+	@RequestMapping(value="/gallery/new", method=RequestMethod.POST)
 	public String add(Gallery gallery) throws Exception {
 		MultipartFile uploadfile = gallery.getUploadfile();
 		
@@ -102,13 +113,9 @@ public class GalleryController {
 			
 			// 바뀐 파일명으로 저장
 			gallery.setPhoto(fileDBName);
-			
 		}
-		
 		galleryService.galleryInsert(gallery); // 저장 메서드 호출
-		
-		return "success";
-		
+		return "success";	
 	}
 	
 	// 포토갤러리 수정
@@ -202,24 +209,16 @@ public class GalleryController {
 		return map;
 	}
 	
-	@GetMapping(value={"/gallery/dispaly"})
+	// 갤러리 사진 출력
+	@GetMapping(value={"/gallery/display"})
 	@ResponseBody
 	public byte[] display(String filename, HttpServletResponse response) throws Exception {
-		
+		logger.info(filename);
 		String sFilePath = saveFolder + filename;
-		logger.info(sFilePath);
+		logger.info(sFilePath.toString());
 		File file = new File(sFilePath);
 		byte[] bytes = FileCopyUtils.copyToByteArray(file);
-		
-		String sEncoding = new String(filename.getBytes("utf-8"), "ISO-8859-1");
-		
-		response.setHeader("Content-Disposition", "attachment; filename = " + sEncoding);
-		
-		response.setContentLength(bytes.length);
-		
 		return bytes;
-		
-		
 	}
 	
 
