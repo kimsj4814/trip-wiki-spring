@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -219,6 +220,23 @@ public class GalleryController {
 		File file = new File(sFilePath);
 		byte[] bytes = FileCopyUtils.copyToByteArray(file);
 		return bytes;
+	}
+	
+	@DeleteMapping(value={"/gallery/{num}"})
+	@ResponseBody
+	public String BoardDeleteAction(@PathVariable int num) {
+		
+		int result = galleryService.galleryDelete(num);
+		
+		// 삭제 처리 실패한 경우
+		if (result == 0) {
+			return "-1";
+		}
+		
+		// 삭제 처리 성공한 경우, 글 목록 보기 요청 전송하기
+		logger.info("게시판 삭제 성공");
+		
+		return "1";
 	}
 	
 

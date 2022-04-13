@@ -40,6 +40,9 @@ public class GalleryDAO {
 		return sqlSession.selectOne("Gallery.detail", num);
 	}
 
+	public int galleryDelete(Gallery gallery) {
+		return sqlSession.delete("Gallery.delete", gallery);
+	}
 
 
 }
