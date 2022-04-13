@@ -52,10 +52,12 @@ public class GalleryServiceImpl implements GalleryService {
 
 	@Override
 	public int galleryDelete(int num) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		Gallery gallery = dao.getDetail(num);
+		if (gallery != null) {
+			result = dao.galleryDelete(gallery);
+		}
+		return result;
 	}
-
-
 
 }
