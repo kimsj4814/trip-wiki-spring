@@ -23,4 +23,9 @@ public class ComDAO {
 		return sqlSession.selectOne("Community.searchCount", map);
 	}
 
+	public void insertBoard(ComBoardList comBoard) {
+		sqlSession.insert("Community.insert", comBoard);
+		
+	}
+
 }
