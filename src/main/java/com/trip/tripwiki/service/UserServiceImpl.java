@@ -1,21 +1,13 @@
 package com.trip.tripwiki.service;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.trip.tripwiki.dao.UserDAO;
 import com.trip.tripwiki.domain.AuthorizationKakao;
 import com.trip.tripwiki.domain.User;
+
 
 
 @Service
