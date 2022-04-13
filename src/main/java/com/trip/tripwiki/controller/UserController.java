@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,6 @@ public class UserController {
 	@PostMapping("/users")
 	public int call(
 			@RequestBody User user,HttpSession session) {
-
 		int result = userService.isId(user.getUser_id(), user.getUser_password());
 		if(result ==2) {
 			return result;
@@ -63,7 +63,21 @@ public class UserController {
 	}
 	@PostMapping("/users/logout")
 	public boolean logout(HttpSession session) {
+		logger.info("logoutSession init");
 		session.invalidate();
 		return true;
+	}//id logout end
+	
+	@PostMapping("/users/password/{id}/{password}")
+	public int passwordConverter(
+			@PathVariable String id,
+			@PathVariable String password) {
+		return userService.changePassword(id, password);
+	}
+	//kakaoLogin
+	@GetMapping("kakaoLogin/{code}")
+	public String kakaologin(
+			@PathVariable String code) {
+		return userService.getKakaoAccessToken(code);
 	}
 }

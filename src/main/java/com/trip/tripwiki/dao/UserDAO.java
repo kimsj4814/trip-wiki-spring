@@ -1,6 +1,7 @@
 package com.trip.tripwiki.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -23,6 +24,12 @@ public class UserDAO {
 	public User idcheck(String id) {
 		return sqlSession.selectOne("Users.idcheck",id);
 	}
+	public User idcheck(String id,String email) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", id);
+		map.put("user_email", email);
+		return sqlSession.selectOne("Users.idandemailcheck",map);
+	}
 	public int createAuthkey(String user_id, String authkey) throws Exception{
 		Map<String,Object> map = new HashMap<String, Object>();
 		map.put("user_id", user_id);
@@ -35,5 +42,20 @@ public class UserDAO {
 		map.put("user_email", user_email);
 		map.put("user_id",id);
 		return sqlSession.update("Users.userAuth", map);
+	}
+	public List<User> MailToEmailGroup(String email){
+		return sqlSession.selectList("Users.IdinEmail",email);
+	}
+	public User KeyselectorForUsers(String key, String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", id);
+		map.put("user_mail_authkey", key);
+		return sqlSession.selectOne("Users.getKey",map);
+	}
+	public int updatePassword(String user_id,String user_password) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user_id);
+		map.put("user_password",user_password);
+		return sqlSession.update("Users.updatePass",map);
 	}
 }
