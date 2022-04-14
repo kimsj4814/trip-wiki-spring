@@ -57,4 +57,10 @@ public class ComServiceImpl implements ComService{
 		return dao.getSearchList(map);
 	}
 
+	@Override
+	public void insertBoard(ComBoardList comBoard) {
+		dao.insertBoard(comBoard);
+	}
+
+
 }

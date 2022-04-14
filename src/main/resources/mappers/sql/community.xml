@@ -39,6 +39,28 @@
 					  where rnum &gt;= #{start} and rnum &lt;= #{end}
 	</select>
 	
+		<insert id="insert" parameterType="comboardlist">
+        <selectKey resultType="int"      order="BEFORE" 
+                   keyProperty="BOARD_NUM">
+         select nvl(max(BOARD_NUM),0)+1 from community
+       </selectKey>
+       insert into community 
+       (BOARD_NUM, 
+        BOARD_NAME, BOARD_PASS, BOARD_SUBJECT, 
+       BOARD_CONTENT, BOARD_FILE, BOARD_ORIGINAL,
+       BOARD_RE_REF, 
+       BOARD_RE_LEV, BOARD_RE_SEQ,  BOARD_READCOUNT, 
+       BOARD_DATE, BOARD_LOCATION) 
+       values
+       (#{BOARD_NUM},
+        #{BOARD_NAME},  #{BOARD_PASS},  #{BOARD_SUBJECT},
+        #{BOARD_CONTENT}, #{BOARD_FILE, jdbcType=VARCHAR}, 
+        #{BOARD_ORIGINAL, jdbcType=VARCHAR}, 
+        #{BOARD_NUM},
+        #{BOARD_RE_LEV}, #{BOARD_RE_SEQ}, #{BOARD_READCOUNT}, 
+        sysdate, #{BOARD_LOCATION})
+   </insert>
+	
 	</mapper>
 	
 	

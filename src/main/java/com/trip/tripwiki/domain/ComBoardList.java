@@ -15,11 +15,26 @@ public class ComBoardList {
 	private int 	BOARD_RE_SEQ;    //답변 글의 순서
 	private int 	BOARD_READCOUNT; //글의 조회수
 	private String  BOARD_LOCATION; //지역
-	
-	//board_wirte.jsp에서 name 속성을 확인하세요.
-	//<input type="file" id="upfile" name="uploadfile"> 확인
+	private String BOARD_ORIGINAL;
+	private String BOARD_DATE;
 	private MultipartFile uploadfile;
 
+	public String getBOARD_ORIGINAL() {
+		return BOARD_ORIGINAL;
+	}
+
+	public void setBOARD_ORIGINAL(String bOARD_ORIGINAL) {
+		BOARD_ORIGINAL = bOARD_ORIGINAL;
+	}
+
+	public String getBOARD_DATE() {
+		return BOARD_DATE;
+	}
+
+	public void setBOARD_DATE(String bOARD_DATE) {
+		BOARD_DATE = bOARD_DATE;
+	}
+	
 	public int getBOARD_NUM() {
 		return BOARD_NUM;
 	}
