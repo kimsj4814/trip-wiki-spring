@@ -21,31 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class TripApiController {
+public class DetailApiController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(TripApiController.class);
+	private static final Logger logger = LoggerFactory.getLogger(DetailApiController.class);
 	
 	@Value("${my.apikey}")
 	private String API_KEY;
-	
-	@GetMapping("/apitest")
-	public Map<String,Object> callApiWithXml(String keyword, int page) {
+
+	@GetMapping("/apitest2")
+	public String callApiWithXml(int contentId) {
 		StringBuffer result = new StringBuffer();
 		String jsonPrintString = null;
-		//keyword = "서울";
+		
 		String encodeResult = null;
 		try {
-			encodeResult = URLEncoder.encode(keyword,"UTF-8");
+			String appName = URLEncoder.encode("한국관광공사", "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String apiUrl="http://api.visitkorea.or.kr/openapi/"
-				+ "service/rest/KorService/searchKeyword?"
+				+ "service/rest/KorService/detailCommon?"
 				+ "serviceKey="+API_KEY
-				+"&MobileApp=AppTest&MobileOS=ETC&"
-				+ "pageNo="+page+"&numOfRows=8&listYN=Y&arrange=A&contentTypeId=12&keyword=" +encodeResult;
-																										//+"&areaCode=1;"
+				+ "&contentId="+contentId
+				+ "&defaultYN=Y&MobileOS=ETC&MobileApp=AppTest&defaultYN=Y&firstImageYN=Y&areacodeYN=Y&catcodeYN=Y&addrinfoYN=Y&mapinfoYN=Y&overviewYN=Y";
+		
 				try {
 					URL url = new URL(apiUrl);
 					HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -57,8 +57,8 @@ public class TripApiController {
 		            while((returnLine = bufferedReader.readLine()) != null) {
 		                result.append(returnLine);
 		            }
-		            logger.info(result.toString());
-		           
+		            
+		
 		            JSONObject jsonObject = XML.toJSONObject(result.toString());
 		            jsonPrintString = jsonObject.toString();
 					
@@ -67,33 +67,7 @@ public class TripApiController {
 					e.printStackTrace();
 				}
 				
-				//0 1 2 3 4 5 6 7 8 9 0  1      25
-				//"t o t a l C o u n t " : 1 4 1, "items"  [22-24]
-				int start = jsonPrintString.indexOf("totalCount");//10   21
-				int end = jsonPrintString.indexOf(",\"items");//25
-				int listcount = Integer.parseInt(jsonPrintString.substring(start+12,end));
-				int limit = 8;
-				int maxpage = (listcount + limit - 1) / limit;
-
-				if(page>maxpage) {
-					page=maxpage;
-				}
-				
-				int startpage = ((page - 1) / 10) * 10 + 1;
-				int endpage = startpage + 10 - 1;
-
-				if (endpage > maxpage)
-					endpage = maxpage;
-				
-				Map<String, Object> map = new HashMap<String,Object>();
-		        map.put("page", page);
-		        map.put("maxpage", maxpage);
-		        map.put("startpage", startpage);
-		        map.put("endpage", endpage);
-		        map.put("listcount", listcount);
-		        map.put("boardlist", jsonPrintString);
-		        map.put("limit", limit);
-		        return map;
+				return jsonPrintString;
 				
 	}
 }
