@@ -8,4 +8,5 @@ public interface UserService {
 	public int add(User user);
 	public int changePassword(String id, String password);
 	public String getKakaoAccessToken(String code);
+	public int insertKakaoId(String id);
 }
