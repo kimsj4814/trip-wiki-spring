@@ -23,12 +23,12 @@ public class GalleryCommentServiceImpl implements GalleryCommentService{
 	}
 
 	@Override
-	public List<GalleryComment> getCommentList(int board_num, int page) {
+	public List<GalleryComment> getCommentList(int gallery_id, int page) {
 		int startrow = 1;
-		int endrow = page * 3;
+		int endrow = page * 5;
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("board_num", board_num);
+		map.put("gallery_id", gallery_id);
 		map.put("start", startrow);
 		map.put("end", endrow);
 		return dao.getCommentList(map);
@@ -46,8 +46,7 @@ public class GalleryCommentServiceImpl implements GalleryCommentService{
 
 	@Override
 	public int commentsDelete(int num) {
-		// TODO Auto-generated method stub
-		return 0;
+		return dao.commentsDelete(num);
 	}
 	
 }

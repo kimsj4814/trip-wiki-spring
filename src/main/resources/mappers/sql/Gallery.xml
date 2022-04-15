@@ -54,6 +54,6 @@
 		delete from gallery 
 		where gallery_id = #{gallery_id}
 	</delete>
-	
+
 
 </mapper>
