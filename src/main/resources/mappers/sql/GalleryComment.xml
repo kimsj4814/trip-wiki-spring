@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="G_Comments">
+	
+	<select id="count" resultType="int" parameterType="int">
+		select count(*)
+		from g_comment
+		where gallery_id = #{gallery_id}
+	</select>
+	
+	<select id="getList" resultType="galleryComment" parameterType="map">
+		select * 
+		from (select rownum rnum, comment_id, gallery_id, user_id, content
+			  from (select comment_id, gallery_id, user_id, content
+			  		from g_comment
+			  		where gallery_id = #{gallery_id}
+			  		order by reg_date desc
+			  		)
+			  )
+		where rnum between #{start} and #{end}	
+	</select>
+	
+	<insert id="insert" parameterType="galleryComment">
+		insert into g_comment 
+		values(g_comm_seq.nextval, #{gallery_id}, #{user_id}, #{content}, sysdate)
+	</insert>
+	
+	<update id="update" parameterType="galleryComment">
+		update g_comment
+		set content = #{content} 
+		where comment_id = #{comment_id}	
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete g_comment
+		where comment_id = #{comment_id}
+	</delete>
+
+</mapper>
