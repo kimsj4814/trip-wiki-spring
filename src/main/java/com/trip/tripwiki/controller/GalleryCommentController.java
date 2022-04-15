@@ -29,7 +29,6 @@ public class GalleryCommentController {
 	@Autowired
 	private GalleryCommentService commentService;
 	
-	
 	@ResponseBody
 	@GetMapping(value="/g_comments")
 	public Map<String, Object> CommentList(@RequestParam int gallery_id, @RequestParam int page) {
