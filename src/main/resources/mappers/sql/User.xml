@@ -56,4 +56,11 @@
 			where user_id =#{user_id}
 	</update>
 	<!-- 패스워드 수정 관련 코드-->
+	<insert id="addKakao" parameterType="map">
+		insert into users 
+		values(
+		#{user_id},0,'@/assets/default.png',
+		'default.png',
+		'null','0',0,sysdate)
+	</insert>
 </mapper>
