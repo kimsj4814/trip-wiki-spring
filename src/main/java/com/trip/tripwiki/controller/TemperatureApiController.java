@@ -29,7 +29,7 @@ public class TemperatureApiController {
 	private String API_KEY;
 
 	@GetMapping("/apitest3")
-	public String callApiWithXml(String tmFc) {
+	public String callApiWithXml(String regId, String tmFc) {
 		StringBuffer result = new StringBuffer();
 		String jsonPrintString = null;
 		
@@ -38,7 +38,8 @@ public class TemperatureApiController {
 		String apiUrl="http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa"
 				+ "?serviceKey="+API_KEY
 				+ "&numOfRows=10&pageNo=1"
-				+ "&regId=11D20501&tmFc="+tmFc;
+				+ "&regId="+regId
+				+ "&tmFc="+tmFc;
 		
 				try {
 					URL url = new URL(apiUrl);
@@ -52,7 +53,6 @@ public class TemperatureApiController {
 		                result.append(returnLine);
 		            }
 		            
-		
 		            JSONObject jsonObject = XML.toJSONObject(result.toString());
 		            jsonPrintString = jsonObject.toString();
 					

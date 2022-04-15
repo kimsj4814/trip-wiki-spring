@@ -30,7 +30,7 @@ public class WeatherApiController {
 	private String API_KEY;
 
 	@GetMapping("/apitest4")
-	public String callApiWithXml(String tmFc) {
+	public String callApiWithXml(String regId,String tmFc) {
 		StringBuffer result = new StringBuffer();
 		String jsonPrintString = null;
 		
@@ -39,7 +39,8 @@ public class WeatherApiController {
 		String apiUrl="http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst"
 				+ "?serviceKey="+API_KEY
 				+ "&numOfRows=3&pageNo=1"
-				+ "&regId=11B00000&tmFc="+tmFc;
+				+ "&regId="+regId
+				+ "&tmFc="+tmFc;
 	
        
 		
