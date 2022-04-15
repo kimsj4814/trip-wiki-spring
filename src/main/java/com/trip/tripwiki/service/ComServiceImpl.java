@@ -38,8 +38,6 @@ public class ComServiceImpl implements ComService{
 
 	@Override
 	public List<ComBoardList> getSearchList(String index, String search_word, int page, int limit) {
-
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(!index.equals("")) {
 			String[] search_field = index.split("");
@@ -55,6 +53,14 @@ public class ComServiceImpl implements ComService{
 		map.put("start", startrow);
 		map.put("end", endrow);
 		return dao.getSearchList(map);
+		
 	}
+
+	@Override
+	public void insertBoard(ComBoardList comBoard) {
+		dao.insertBoard(comBoard);
+	}
+
+
 
 }

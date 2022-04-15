@@ -1,5 +1,6 @@
 package com.trip.tripwiki.dao;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,11 @@ public class ComDAO {
 
 	public int getSearchListCount(Map<String, Object> map) {
 		return sqlSession.selectOne("Community.searchCount", map);
+	}
+
+	public void insertBoard(ComBoardList comBoard) {
+		sqlSession.insert("Community.insert", comBoard);
+		
 	}
 
 }

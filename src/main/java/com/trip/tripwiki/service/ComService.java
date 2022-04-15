@@ -10,4 +10,8 @@ public interface ComService {
 
 	public List<ComBoardList> getSearchList(String index, String search_word, int page, int limit);
 
+	public void insertBoard(ComBoardList comBoard);
+
+
+
 }
