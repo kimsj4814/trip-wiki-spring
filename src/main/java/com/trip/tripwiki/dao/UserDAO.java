@@ -58,4 +58,10 @@ public class UserDAO {
 		map.put("user_password",user_password);
 		return sqlSession.update("Users.updatePass",map);
 	}
+
+	public int addKakao(String id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", "kakao"+id);
+		return sqlSession.insert("Users.addKakao",map);
+	}
 }

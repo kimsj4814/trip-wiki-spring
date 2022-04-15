@@ -31,5 +31,4 @@ public class WebMVCConfig implements WebMvcConfigurer {
 	public RestTemplate resttemplate() {
 		return new RestTemplate();
 	}
-	
 }

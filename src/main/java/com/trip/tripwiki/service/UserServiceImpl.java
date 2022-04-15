@@ -4,6 +4,8 @@ import java.io.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.sun.media.jfxmedia.logging.Logger;
 import com.trip.tripwiki.dao.UserDAO;
 import com.trip.tripwiki.domain.AuthorizationKakao;
 import com.trip.tripwiki.domain.User;
@@ -59,6 +61,20 @@ public class UserServiceImpl implements UserService{
 		AuthorizationKakao authorization = oauth2Kakao.callTokenApi(code);
 		String userInfoFromKakao = oauth2Kakao.callGetUserByAccessToken(authorization.getAccess_token());
 		return userInfoFromKakao;
+	}
+	@Override
+	public int insertKakaoId(String id) {
+		User user  = dao.idcheck("kakao" + id);
+		// -1이면 Error
+		int result = -1;
+		if(user != null) {
+			//1이라면 성공
+			result = dao.addKakao(id);
+		}else {
+			//result가 2라면 IDCheck 중복 검사에 걸린 것
+			result = 2;
+		}
+		return result;
 	}
 	
 //	@Override

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trip.tripwiki.domain.User;
 import com.trip.tripwiki.service.UserService;
 
+import oracle.jdbc.proxy.annotation.Post;
+
 @RestController
 public class UserController {
 	private Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -79,5 +81,33 @@ public class UserController {
 	public String kakaologin(
 			@PathVariable String code) {
 		return userService.getKakaoAccessToken(code);
+	}
+	
+	@PostMapping("kokaoJoins/{id}")
+	public int kakaoJoin(
+			@PathVariable String id,HttpSession session)
+	{
+		logger.info("========================= kakaoJoins Controller 진입하였습니다=======================");
+		int result = userService.insertKakaoId(id);
+		if(result == 1) {
+			session.setAttribute("id", "kakao"+id);
+			session.setMaxInactiveInterval(3600);
+		}
+		return result;
+	}
+	
+	@PostMapping("authLogin/{id}")
+	public int authLoginConverter(
+			@PathVariable String id,HttpSession session) {
+		int result = -1;
+		User user = userService.isId("kakao"+id);
+		if(user != null) {
+			session.setAttribute("id", user.getUser_id());
+			session.setMaxInactiveInterval(3600);
+			result =1;
+		}
+		logger.info("[authLogin info] = " + result);
+		return result;
+		
 	}
 }
