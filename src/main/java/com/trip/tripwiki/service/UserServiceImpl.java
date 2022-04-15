@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService{
 		User user  = dao.idcheck("kakao" + id);
 		// -1이면 Error
 		int result = -1;
-		if(user != null) {
+		if(user == null) {
 			//1이라면 성공
 			result = dao.addKakao(id);
 		}else {
