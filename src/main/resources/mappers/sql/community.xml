@@ -7,7 +7,7 @@
 	<select id="searchCount" parameterType="map" resultType="int" >
 	select count(*) 
 	from community 
-	where id != 'admin' 
+	where
 	<include refid="search_"/>
 	
 	</select>
@@ -15,12 +15,11 @@
 	
 	<sql id="search_">
 		 <if test="search_field!=null">
-									and
 									<foreach collection="search_field" separator="or" item="index">
 									<choose>
-										<when test='index=="I"'>id</when>
-										<when test='index=="S"'>subject</when>
-										<when test='index=="L"'>location</when>
+										<when test='index=="I"'>BOARD_NAME</when>
+										<when test='index=="S"'>BOARD_SUBJECT</when>
+										<when test='index=="L"'>BOARD_LOCATION</when>
 									</choose>
 									like #{search_word}
 									</foreach>
@@ -30,11 +29,12 @@
 	<select id="getSearchList" parameterType="map" resultType="comboardlist">
 		select * 
 		from ( select rownum rnum, b.*
-					 		from(select * from community 
-					           where id != 'admin'
+					 		from
+					 		(select * from community 
+					           where
 					          	<include refid="search_"/>
-					             order by id
-					             )b
+					             order by BOARD_RE_REF desc,
+				BOARD_RE_SEQ asc)b
 					         )
 					  where rnum &gt;= #{start} and rnum &lt;= #{end}
 	</select>

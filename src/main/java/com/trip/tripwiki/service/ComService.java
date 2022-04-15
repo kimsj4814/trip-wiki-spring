@@ -13,4 +13,5 @@ public interface ComService {
 	public void insertBoard(ComBoardList comBoard);
 
 
+
 }

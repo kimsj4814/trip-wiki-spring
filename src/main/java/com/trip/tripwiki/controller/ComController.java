@@ -135,6 +135,7 @@ public class ComController {
 		
 		if (endpage > maxpage)
 			endpage = maxpage;
+		
 			
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("page", page);
