@@ -2,6 +2,7 @@ package com.trip.tripwiki.service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,24 @@ public class GalleryServiceImpl implements GalleryService {
 			result = dao.galleryDelete(gallery);
 		}
 		return result;
+	}
+
+	@Override
+	public List<Gallery> myGallery(String user_id, int page, int limit) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		int startrow = (page - 1) * limit + 1;
+		int endrow = startrow + limit - 1;
+		map.put("user_id", user_id);
+		map.put("start", startrow);
+		map.put("end", endrow);
+		return dao.myGallery(map);
+	}
+
+	@Override
+	public int myListCount(String user_id) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user_id);
+		return dao.myListCount(map);
 	}
 
 }

@@ -54,6 +54,21 @@
 		delete from gallery 
 		where gallery_id = #{gallery_id}
 	</delete>
-
+	
+	<select id="my" parameterType="java.util.Map" resultType="gallery">
+		select *
+    	from(select rownum rnum, g.* 
+    		 from (select * from gallery 
+         		   order by gallery_id desc) g
+        )
+		where rnum &gt;= #{start} and rnum &lt;= #{end} 
+		and user_id = #{user_id}
+	</select>
+	
+	<select id="mycount" parameterType="map" resultType="int">
+		select count(*) from gallery
+		where user_id = #{user_id}
+	</select>
+	
 
 </mapper>

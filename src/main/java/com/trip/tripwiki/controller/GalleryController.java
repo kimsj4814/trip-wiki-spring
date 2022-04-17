@@ -43,7 +43,7 @@ public class GalleryController {
 	// 갤러리 리스트 부분 가져오기
 	@ResponseBody
 	@GetMapping(value="/main/photos")
-	public Map<String, Object> MainGallery() {
+	public Map<String, Object> mainGallery() {
 		List<Gallery> gallerylist = galleryService.mainGallery();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("gallerylist", gallerylist);
@@ -86,7 +86,7 @@ public class GalleryController {
 	// 포토갤러리 추가
 	@ResponseBody
 	@RequestMapping(value="/gallery/new", method=RequestMethod.POST)
-	public String add(Gallery gallery) throws Exception {
+	public String galleryAdd(Gallery gallery) throws Exception {
 		MultipartFile uploadfile = gallery.getUploadfile();
 		
 		if (uploadfile != null && !uploadfile.isEmpty()) {
@@ -122,7 +122,7 @@ public class GalleryController {
 	// 포토갤러리 수정
 	@PatchMapping("/gallery/update")
 	@ResponseBody
-	public String BoardModifyAction(Gallery gallerydata, 
+	public String galleryModifyAction(Gallery gallerydata, 
 			@RequestParam(value="check", defaultValue="", required=false) String check) throws Exception {
 		String message = "";
 		MultipartFile uploadfile = gallerydata.getUploadfile();
@@ -203,7 +203,7 @@ public class GalleryController {
 	// 포토갤러리 상세
 	@GetMapping(value={"/gallery/{num}"})
 	@ResponseBody
-	public Map<String, Object> Detail(@PathVariable int num) {
+	public Map<String, Object> galleryDetail(@PathVariable int num) {
 		Gallery gallery = galleryService.getDetail(num);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("gallery", gallery);
@@ -224,7 +224,7 @@ public class GalleryController {
 	
 	@DeleteMapping(value={"/gallery/{num}"})
 	@ResponseBody
-	public String BoardDeleteAction(@PathVariable int num) {
+	public String galleryDeleteAction(@PathVariable int num) {
 		
 		int result = galleryService.galleryDelete(num);
 		
@@ -239,5 +239,41 @@ public class GalleryController {
 		return "1";
 	}
 	
-
+	// 사용자가 작성한 포토갤러리
+	@ResponseBody
+	@GetMapping(value="/mygallery")
+	public Map<String, Object> myGallery(
+			@RequestParam String user_id,
+			@RequestParam(value="page", defaultValue="1", required=false) int page,
+			@RequestParam(value="limit", defaultValue="10", required=false) int limit) {
+		
+		int listcount = 0;
+		listcount = galleryService.myListCount(user_id); // 총 리스트 수를 받아오기
+			
+		// 총 페이지 수
+		int maxpage = (listcount + limit - 1) / limit;
+			
+		// 현재 페이지에 보여줄 시작 페이지 수 (1, 11, 21 ...)
+		int startpage = ((page - 1) / 10) * 10 + 1;
+		
+		// 현재 페이지에 보여줄 마지막 페이지 수 (10, 20, 30 ...)
+		int endpage = startpage + 10 - 1;
+		if (endpage > maxpage)
+			endpage = maxpage;
+			
+		List<Gallery> gallerylist = galleryService.myGallery(user_id, page, limit); // 리스트 받아오기
+			
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("page", page);
+		map.put("maxpage", maxpage);
+		map.put("startpage", startpage);
+		map.put("endpage", endpage);
+		map.put("listcount", listcount);
+		map.put("gallerylist", gallerylist);
+		map.put("limit", limit);
+		return map;
+	}
+	
+	
+	
 }
