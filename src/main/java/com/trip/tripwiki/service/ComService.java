@@ -12,6 +12,16 @@ public interface ComService {
 
 	public void insertBoard(ComBoardList comBoard);
 
+	public ComBoardList getDetail(int num);
+
+	public int boardReply(ComBoardList comBoard);
+
+	public boolean isBoardWriter(int board_NUM, String board_PASS);
+
+	public int boardModify(ComBoardList boarddata);
+
+	public int setReadCountUpdate(int num);
+
 
 
 }

@@ -61,6 +61,47 @@ public class ComServiceImpl implements ComService{
 		dao.insertBoard(comBoard);
 	}
 
+	@Override
+	public ComBoardList getDetail(int num) {
+		return dao.getDetail(num);
+	}
+
+	@Override
+	public int boardReply(ComBoardList comBoard) {
+		comboardReplyUpdate(comBoard);
+		comBoard.setBOARD_RE_LEV(comBoard.getBOARD_RE_LEV()+1);
+		comBoard.setBOARD_RE_SEQ(comBoard.getBOARD_RE_SEQ()+1);
+		return dao.boardReply(comBoard);
+	}
+
+	private int comboardReplyUpdate(ComBoardList comBoard) {
+		return dao.boardReplyUpdate(comBoard);
+		
+	}
+
+	@Override
+	public boolean isBoardWriter(int num, String pass) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("num", num);
+		map.put("pass", pass);
+		ComBoardList result = dao.isBoardWriter(map);
+		if(result==null)
+			return false;
+		else
+			return true;
+	}
+	
+
+	@Override
+	public int boardModify(ComBoardList modifyboard) {
+		return dao.boardModify(modifyboard);
+	}
+
+	@Override
+	public int setReadCountUpdate(int num) {
+		return dao.getReadCountUpdate(num);
+	}
+
 
 
 }

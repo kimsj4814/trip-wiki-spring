@@ -60,6 +60,56 @@
         #{BOARD_RE_LEV}, #{BOARD_RE_SEQ}, #{BOARD_READCOUNT}, 
         sysdate, #{BOARD_LOCATION})
    </insert>
+   
+   	<select id="detail" parameterType="int" resultType="comboardlist">
+		select*
+		from community 
+		where BOARD_NUM = #{NUMBER}
+	</select>
+	
+	<update id="reply_update" parameterType="comboardlist">
+	update community set   BOARD_RE_SEQ=BOARD_RE_SEQ + 1 
+						where BOARD_RE_REF = #{BOARD_RE_REF} 
+						and   BOARD_RE_SEQ <![CDATA[ > ]]> #{BOARD_RE_SEQ}
+	</update>
+	
+	<insert id="reply_insert" parameterType="comboardlist">
+	<selectKey resultType="int"      order="BEFORE" 
+                   keyProperty="BOARD_NUM">
+         select nvl(max(BOARD_NUM),0)+1 from community
+     </selectKey>
+		insert into community
+					(BOARD_NUM,BOARD_NAME,BOARD_PASS,BOARD_SUBJECT,
+					BOARD_CONTENT,BOARD_DATE, BOARD_RE_REF,
+					 BOARD_RE_LEV, BOARD_RE_SEQ, BOARD_READCOUNT, BOARD_LOCATION) 
+					values(#{BOARD_NUM},
+					  		#{BOARD_NAME},#{BOARD_PASS},#{BOARD_SUBJECT},
+							#{BOARD_CONTENT},sysdate,#{BOARD_RE_REF},
+							#{BOARD_RE_LEV},#{BOARD_RE_SEQ}, 0, #{BOARD_LOCATION})
+	</insert>
+	
+		<select id="boardWriter" parameterType="map" resultType="comboardlist">
+		select * from community 
+		where BOARD_NUM=#{num}
+		and	  BOARD_PASS=#{pass}
+	</select>
+	
+	<update id="modify" parameterType="comboardlist">
+	update community 
+	set 
+		BOARD_LOCATION=#{BOARD_LOCATION},
+		BOARD_SUBJECT=#{BOARD_SUBJECT},
+		BOARD_CONTENT=#{BOARD_CONTENT},
+		BOARD_FILE=#{BOARD_FILE, jdbcType=VARCHAR},
+		BOARD_ORIGINAL=#{BOARD_ORIGINAL, jdbcType=VARCHAR}
+	where BOARD_NUM=#{BOARD_NUM}	
+	</update>
+	
+	<update id="readCountUpdate" parameterType="int">
+	update community
+	set BOARD_READCOUNT=BOARD_READCOUNT+1 
+	where BOARD_NUM = #{number}
+	</update>
 	
 	</mapper>
 	

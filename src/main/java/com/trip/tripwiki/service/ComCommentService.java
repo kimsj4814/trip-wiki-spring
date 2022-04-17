@@ -1,0 +1,25 @@
+package com.trip.tripwiki.service;
+
+import java.util.List;
+
+import com.trip.tripwiki.domain.ComComment;
+
+
+
+public interface ComCommentService {
+	
+	// 글의 갯수 구하기
+	public int getListCount(int board_num);
+	
+	// 댓글 목록 가져오기
+	public List<ComComment> getCommentList(int board_num, int page);
+	
+	// 댓글 등록하기
+	public int commentsInsert(ComComment c);
+	
+	//댓글 삭제
+	public int commentsDelete(int num);
+	
+	// 댓글 수정
+	public int commentsUpdate(ComComment co);
+}

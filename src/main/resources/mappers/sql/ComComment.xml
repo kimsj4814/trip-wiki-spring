@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommunityComments">
+
+<select id="count" resultType="int" parameterType="int">
+		select count(*)
+		from comcomments
+		where board_num = #{board_num}
+	</select>
+	
+	<select id="getList" resultType="comComment" parameterType="map">
+		select*
+		from( select rownum rnum, num, id, content, reg_date, board_num
+			from(
+					select num, id, content, reg_date, board_num
+					from comcomments
+					where board_num = #{board_num}
+					order by reg_date desc
+				)
+			)
+			where rnum between #{start} and #{end}
+	</select>
+	
+	<insert id="insert" parameterType="comComment">
+	insert into comcomments 
+		values(comcom_seq.nextval, #{id}, #{content}, sysdate, #{board_num})
+	</insert>
+	
+	
+	<update id="update" parameterType="comComment">
+		update comcomments set content= #{content} where num = #{num}
+	</update>
+	
+	<delete id="delete" parameterType="int">
+		delete comcomments
+		where num = #{num}
+	</delete>
+</mapper>
