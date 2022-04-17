@@ -19,4 +19,8 @@ public interface GalleryService {
 	
 	public int galleryDelete(int num);
 
+	public List<Gallery> myGallery(String user_id, int page, int limit);
+
+	public int myListCount(String user_id);
+
 }

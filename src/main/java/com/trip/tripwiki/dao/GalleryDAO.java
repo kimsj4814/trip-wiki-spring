@@ -2,6 +2,7 @@ package com.trip.tripwiki.dao;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,13 @@ public class GalleryDAO {
 	public int galleryDelete(Gallery gallery) {
 		return sqlSession.delete("Gallery.delete", gallery);
 	}
+	
+	public List<Gallery> myGallery(Map<String, Object> map) {
+		return sqlSession.selectList("Gallery.my", map);
+	}
 
+	public int myListCount(Map<String, Object> map) {
+		return sqlSession.selectOne("Gallery.mycount", map);
+	}
 
 }
