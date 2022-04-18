@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Update">
+
+<select id="usercount" resultType="int">
+select count(*) from users where user_id !='admin'
+</select>
+
+<select id="userlist" resultType="user" >
+ select *
+ from(
+ 			select rownum rnum, b.*
+ 			from (select * from users
+ 			 		where user_id !='admin'
+ 				   order by user_id
+ 				   )b
+ 				 )
+ 				where rnum between #{start} and #{end} 				
+</select>
+
+
+<insert id="insert" >
+	insert into users
+	values(vue_seq.nextval, #{name}, #{age})
+</insert>
+
+<update id="update" parameterType="user">
+	update users
+	set user_password = #{user_password}
+	where user_id=#{user_id}
+</update>
+
+<delete id="delete" >
+delete users where user_id=#{user_id}
+</delete>
+</mapper>
