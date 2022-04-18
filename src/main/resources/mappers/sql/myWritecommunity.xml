@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Mycommunity">
+<select id="searchCount" parameterType="String" resultType="int" >
+	select count(*) 
+	from community 
+	where board_name = #{board_name}
+	</select>
+
+<select id="myboardlist" parameterType="map" resultType="comboardlist" >
+ select *
+ from(
+ 			select rownum rnum, b.*
+ 			from (select * from community
+ 					where board_name = #{board_name}
+ 				   order by board_date
+ 				   ) b
+ 				 )
+ 				where rnum between #{start} and #{end} 				
+</select>
+	
+</mapper>
