@@ -53,4 +53,8 @@ public class ComDAO {
 		return sqlSession.update("Community.readCountUpdate", num);
 	}
 
+	public int boardDelete(ComBoardList comboard) {
+		return sqlSession.delete("Community.delete", comboard);
+	}
+
 }
