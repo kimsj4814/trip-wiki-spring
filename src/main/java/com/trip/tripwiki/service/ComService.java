@@ -22,6 +22,8 @@ public interface ComService {
 
 	public int setReadCountUpdate(int num);
 
+	public int boardDelete(int num);
+
 
 
 }

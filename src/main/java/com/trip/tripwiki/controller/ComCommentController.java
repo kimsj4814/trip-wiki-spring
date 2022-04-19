@@ -51,7 +51,7 @@ public class ComCommentController {
 	   }
 	
 	@ResponseBody
-	@PatchMapping(value = "/comcopmments")
+	@PatchMapping(value = "/comcomments")
 	public int ComCommentUpdate(@RequestBody ComComment co) {
 	     return comCommentService.commentsUpdate(co); 
 	   }

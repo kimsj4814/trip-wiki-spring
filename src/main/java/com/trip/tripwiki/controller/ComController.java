@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -282,6 +283,29 @@ public class ComController {
 			message="success";
 		}
 		return message;
+	}
+	
+	@DeleteMapping("/communitys/{num}")
+	@ResponseBody
+	public String BoardDeleteAction(String password, @PathVariable int num
+			) {
+
+		logger.info("비밀번호=" + password);
+		logger.info("글번호=" + num);
+		boolean usercheck = comService.isBoardWriter(num, password);
+		
+		if (usercheck == false) {
+			return  "0";
+		}
+		
+		int result = comService.boardDelete(num);
+		
+		if (result == 0) {
+			return "-1";
+		}
+		
+		logger.info("게시판 삭제 성공");
+		return "1";
 	}
 	
 }

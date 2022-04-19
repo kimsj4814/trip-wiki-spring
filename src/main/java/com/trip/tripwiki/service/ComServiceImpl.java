@@ -102,6 +102,16 @@ public class ComServiceImpl implements ComService{
 		return dao.getReadCountUpdate(num);
 	}
 
+	@Override
+	public int boardDelete(int num) {
+		int result=0;
+		ComBoardList comboard = dao.getDetail(num);
+		if(comboard != null) {
+			result=dao.boardDelete(comboard);
+		}
+		return result;
+	}
+
 
 
 }
