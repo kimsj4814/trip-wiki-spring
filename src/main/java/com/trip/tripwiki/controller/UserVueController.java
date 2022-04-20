@@ -23,6 +23,8 @@ public class UserVueController {
 	public String Join() {
 		return "index.html";
 	}
+	
+	
 	@GetMapping("/trip/auth")
 	public String mailAuth() {
 		return "index.html";	
