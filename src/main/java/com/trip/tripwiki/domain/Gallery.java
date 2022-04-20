@@ -45,7 +45,7 @@ public class Gallery {
 		return reg_date;
 	}
 	public void setReg_date(String reg_date) {
-		this.reg_date = reg_date.substring(0, 10);
+		this.reg_date = reg_date.substring(0, 16);
 	}
 	public MultipartFile getUploadfile() {
 		return uploadfile;
