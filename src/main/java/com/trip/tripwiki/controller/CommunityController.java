@@ -31,5 +31,10 @@ public class CommunityController {
 	public String com5() {
 		return "index.html";
 	}
+	
+	@GetMapping(value= {"/trip/communityWrite"})
+	public String com6() {
+		return "index.html";
+	}
 
 }
