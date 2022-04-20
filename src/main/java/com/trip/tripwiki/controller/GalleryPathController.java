@@ -7,28 +7,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class GalleryPathController {
 	
-	@GetMapping(value="/gallery")
+	@GetMapping(value="/trip/gallery")
 	public String gallery() {
 		return "index.html";
 	}
 	
-	@GetMapping(value="/galleryWrite")
+	@GetMapping(value="/trip/galleryWrite")
 	public String galleryWrite() {
 		return "index.html";
 	}
 	
-	@GetMapping(value="/galleryDetail/{num}")
+	@GetMapping(value="/trip/galleryDetail/{num}")
 	public String galleryDetail(@PathVariable int num) {
 		return "index.html";
 	}
 	
-	@GetMapping(value="/galleryModify/{num}")
+	@GetMapping(value="/trip/galleryModify/{num}")
 	public String galleryModify(@PathVariable int num) {
 		return "index.html";
 	}
-	
-	
-	
-	
 	
 }
